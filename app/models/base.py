@@ -16,4 +16,10 @@ class IdMixin(SQLModel):
 
 class TimestampMixin(SQLModel):
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-    updated_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
+    updated_at: datetime = Field(
+        default_factory=datetime.utcnow, sa_column_kwargs={"onupdate": datetime.utcnow}
+    )
+
+
+class DeleteResponse(SQLModel):
+    deleted: int
