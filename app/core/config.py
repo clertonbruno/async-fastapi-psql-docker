@@ -1,6 +1,7 @@
 from typing import Any
 
-from pydantic import BaseSettings, Field, PostgresDsn, validator
+from pydantic import Field, PostgresDsn, validator
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -10,10 +11,10 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str = Field("password", env="POSTGRES_PASSWORD")
     POSTGRES_DB: str = Field("inventory_db", env="POSTGRES_DB")
     POSTGRES_HOST: str = Field("localhost", env="POSTGRES_HOST")
-    POSTGRES_PORT: int | str = Field("5432", env="POSTGRES_PORT")
+    POSTGRES_PORT: int = Field(5432, env="POSTGRES_PORT")
     POSTGRES_ECHO: bool = Field(False, env="POSTGRES_ECHO")
     POSTGRES_POOL_SIZE: int = Field(10, env="POSTGRES_POOL_SIZE")
-    ASYNC_POSTGRES_URI: PostgresDsn | None
+    ASYNC_POSTGRES_URI: PostgresDsn | None = None
 
     class Config:
         case_sensitive = True
@@ -39,10 +40,10 @@ class Settings(BaseSettings):
 
         return PostgresDsn.build(
             scheme="postgresql+asyncpg",
-            user=values.get("POSTGRES_USER"),
+            username=values.get("POSTGRES_USER"),
             password=values.get("POSTGRES_PASSWORD"),
             host=values.get("POSTGRES_HOST"),
-            port=str(values.get("POSTGRES_PORT")),
+            port=values.get("POSTGRES_PORT"),
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
 
