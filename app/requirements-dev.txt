@@ -8,4 +8,3 @@ httpx
 pytest
 pytest-asyncio
 pytest-timeout
-pydantic-settings
