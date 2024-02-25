@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 engine = create_async_engine(
-    settings.ASYNC_POSTGRES_URI,
+    str(settings.ASYNC_POSTGRES_URI),
     echo=settings.POSTGRES_ECHO,
     future=True,
     pool_size=max(5, settings.POSTGRES_POOL_SIZE),
